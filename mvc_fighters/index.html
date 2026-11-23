@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MVC — личный состав отделения</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./main.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <p class="eyebrow">Учебный проект · JavaScript без классов</p>
+      <h1>Личный состав отделения</h1>
+      <p class="intro">Один набор данных — три обязанности: модель хранит и отбирает, представление рисует, контроллер связывает действия.</p>
+    </header>
+
+    <section class="architecture" aria-label="Архитектура MVC">
+      <div class="step"><b>fighters.json</b><small>Источник данных</small></div>
+      <span class="arrow">→</span>
+      <div class="step"><b>data.js</b><small>fetch()</small></div>
+      <span class="arrow">→</span>
+      <div class="step model"><b>model.js</b><small>Данные и фильтры</small></div>
+      <span class="arrow">↔</span>
+      <div class="step controller"><b>controller.js</b><small>Управление</small></div>
+      <span class="arrow">→</span>
+      <div class="step view"><b>view.js</b><small>Отображение</small></div>
+    </section>
+    <p class="architecture-note">index.html подключает main.js; main.js запускает контроллер. Кнопки и поля ввода передают события контроллеру, который обращается к модели и обновляет представление.</p>
+
+    <section class="panel">
+      <div class="toolbar">
+        <label>Поиск по имени или городу
+          <input id="search" type="search" placeholder="Например: Москва">
+        </label>
+        <label>Звание
+          <select id="rank"><option value="">Все звания</option></select>
+        </label>
+        <label>Сортировка
+          <select id="sort">
+            <option value="default">Как в JSON</option>
+            <option value="name">По имени (А—Я)</option>
+            <option value="ageAsc">По возрасту ↑</option>
+            <option value="ageDesc">По возрасту ↓</option>
+          </select>
+        </label>
+        <button id="reload" type="button">Загрузить JSON заново</button>
+      </div>
+      <div class="summary">
+        <strong id="counter">Бойцов: —</strong>
+        <span id="status" role="status" aria-live="polite">Ожидание загрузки…</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>№</th><th>Имя</th><th>Возраст</th><th>Место призыва</th><th>Звание</th><th>Должность</th></tr></thead>
+          <tbody id="fighters"></tbody>
+        </table>
+      </div>
+      <p id="empty" class="empty" hidden>По выбранным условиям бойцы не найдены.</p>
+    </section>
+    <section class="explanation">
+      <h2>Что происходит при поиске?</h2>
+      <p>Событие <code>input</code> → функция контроллера → функция модели <code>getVisibleFighters()</code> → функция представления <code>renderFighters()</code> → новая таблица HTML. Повторного запроса к JSON при фильтрации нет: модель использует уже загруженный массив.</p>
+    </section>
+  </main>
+</body>
+</html>
