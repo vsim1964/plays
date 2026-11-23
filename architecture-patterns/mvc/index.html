@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MVC — Личный состав</title><link rel="stylesheet" href="style.css">
+<script type="module" src="main.js"></script></head>
+<body><main><header><div class="kicker">Учебная лаборатория · архитектурные паттерны</div>
+<h1>MVC</h1><p>Контроллер принимает действие, модель меняется, View отображает состояние.</p>
+<p><a href="../index.html">← К оглавлению</a></p></header>
+<section class="panel"><h2>Изменение звания</h2><p class="muted">Выберите бойца и присвойте ему звание. Все изменения происходят в памяти браузера. Перезагрузка возвращает исходные данные.</p>
+<div class="grid"><div><label for="person">Боец</label><select id="person"></select></div>
+<div><label for="rank">Новое звание</label><select id="rank"><option>рядовой</option><option>ефрейтор</option><option>младший сержант</option><option>сержант</option><option>старший сержант</option></select></div></div>
+<p><button id="save" type="button">Изменить звание</button></p></section>
+<section class="panel"><h2>Представление: таблица</h2><div class="table-wrap"><table><thead><tr><th>Имя</th><th>Возраст</th><th>Место призыва</th><th>Звание</th><th>Должность</th></tr></thead><tbody id="fighters"></tbody></table></div></section>
+<section class="panel"><h2>Трассировка: кто вызвал кого?</h2><pre id="log" aria-live="polite"></pre></section>
+<section class="panel"><h2>На что обратить внимание</h2><p>Откройте <code>main.js</code>, затем связанные модули. Проследите маршрут изменения звания по сообщениям в консоли выше. Отличие этого варианта от соседних — <strong>Контроллер принимает действие, модель меняется, View отображает состояние.</strong></p></section>
+<footer><small>Учебные вымышленные данные. Работа выполняется в браузере, без записи в JSON.</small></footer>
+</main></body></html>
