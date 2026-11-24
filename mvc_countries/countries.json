@@ -1,0 +1,650 @@
+{
+  "countries": [
+    {
+      "id": 1,
+      "name": "Австрия",
+      "capital": "Вена",
+      "population": 9200000,
+      "area": 83879,
+      "region": "Западная Европа",
+      "languages": [
+        "немецкий"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 2,
+      "name": "Албания",
+      "capital": "Тирана",
+      "population": 2400000,
+      "area": 28748,
+      "region": "Южная Европа",
+      "languages": [
+        "албанский"
+      ],
+      "currency": "лек",
+      "government": "парламентская республика",
+      "isEU": false
+    },
+    {
+      "id": 3,
+      "name": "Андорра",
+      "capital": "Андорра-ла-Велья",
+      "population": 85000,
+      "area": 468,
+      "region": "Южная Европа",
+      "languages": [
+        "каталанский"
+      ],
+      "currency": "евро",
+      "government": "парламентское княжество",
+      "isEU": false
+    },
+    {
+      "id": 4,
+      "name": "Беларусь",
+      "capital": "Минск",
+      "population": 9100000,
+      "area": 207600,
+      "region": "Восточная Европа",
+      "languages": [
+        "белорусский",
+        "русский"
+      ],
+      "currency": "белорусский рубль",
+      "government": "президентская республика",
+      "isEU": false
+    },
+    {
+      "id": 5,
+      "name": "Бельгия",
+      "capital": "Брюссель",
+      "population": 11800000,
+      "area": 30528,
+      "region": "Западная Европа",
+      "languages": [
+        "нидерландский",
+        "французский",
+        "немецкий"
+      ],
+      "currency": "евро",
+      "government": "парламентская монархия",
+      "isEU": true
+    },
+    {
+      "id": 6,
+      "name": "Болгария",
+      "capital": "София",
+      "population": 6400000,
+      "area": 110994,
+      "region": "Восточная Европа",
+      "languages": [
+        "болгарский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 7,
+      "name": "Босния и Герцеговина",
+      "capital": "Сараево",
+      "population": 3200000,
+      "area": 51197,
+      "region": "Южная Европа",
+      "languages": [
+        "боснийский",
+        "сербский",
+        "хорватский"
+      ],
+      "currency": "конвертируемая марка",
+      "government": "парламентская республика",
+      "isEU": false
+    },
+    {
+      "id": 8,
+      "name": "Ватикан",
+      "capital": "Ватикан",
+      "population": 800,
+      "area": 0.49,
+      "region": "Южная Европа",
+      "languages": [
+        "итальянский",
+        "латинский"
+      ],
+      "currency": "евро",
+      "government": "выборная теократическая монархия",
+      "isEU": false
+    },
+    {
+      "id": 9,
+      "name": "Великобритания",
+      "capital": "Лондон",
+      "population": 69000000,
+      "area": 243610,
+      "region": "Северная Европа",
+      "languages": [
+        "английский"
+      ],
+      "currency": "фунт стерлингов",
+      "government": "парламентская монархия",
+      "isEU": false
+    },
+    {
+      "id": 10,
+      "name": "Венгрия",
+      "capital": "Будапешт",
+      "population": 9500000,
+      "area": 93028,
+      "region": "Восточная Европа",
+      "languages": [
+        "венгерский"
+      ],
+      "currency": "форинт",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 11,
+      "name": "Германия",
+      "capital": "Берлин",
+      "population": 83500000,
+      "area": 357588,
+      "region": "Западная Европа",
+      "languages": [
+        "немецкий"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 12,
+      "name": "Греция",
+      "capital": "Афины",
+      "population": 10400000,
+      "area": 131957,
+      "region": "Южная Европа",
+      "languages": [
+        "греческий"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 13,
+      "name": "Дания",
+      "capital": "Копенгаген",
+      "population": 6000000,
+      "area": 42933,
+      "region": "Северная Европа",
+      "languages": [
+        "датский"
+      ],
+      "currency": "датская крона",
+      "government": "парламентская монархия",
+      "isEU": true
+    },
+    {
+      "id": 14,
+      "name": "Ирландия",
+      "capital": "Дублин",
+      "population": 5400000,
+      "area": 70273,
+      "region": "Северная Европа",
+      "languages": [
+        "ирландский",
+        "английский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 15,
+      "name": "Исландия",
+      "capital": "Рейкьявик",
+      "population": 390000,
+      "area": 103000,
+      "region": "Северная Европа",
+      "languages": [
+        "исландский"
+      ],
+      "currency": "исландская крона",
+      "government": "парламентская республика",
+      "isEU": false
+    },
+    {
+      "id": 16,
+      "name": "Испания",
+      "capital": "Мадрид",
+      "population": 49000000,
+      "area": 505990,
+      "region": "Южная Европа",
+      "languages": [
+        "испанский"
+      ],
+      "currency": "евро",
+      "government": "парламентская монархия",
+      "isEU": true
+    },
+    {
+      "id": 17,
+      "name": "Италия",
+      "capital": "Рим",
+      "population": 58900000,
+      "area": 301340,
+      "region": "Южная Европа",
+      "languages": [
+        "итальянский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 18,
+      "name": "Латвия",
+      "capital": "Рига",
+      "population": 1850000,
+      "area": 64589,
+      "region": "Северная Европа",
+      "languages": [
+        "латышский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 19,
+      "name": "Литва",
+      "capital": "Вильнюс",
+      "population": 2900000,
+      "area": 65300,
+      "region": "Северная Европа",
+      "languages": [
+        "литовский"
+      ],
+      "currency": "евро",
+      "government": "смешанная республика",
+      "isEU": true
+    },
+    {
+      "id": 20,
+      "name": "Лихтенштейн",
+      "capital": "Вадуц",
+      "population": 40000,
+      "area": 160,
+      "region": "Западная Европа",
+      "languages": [
+        "немецкий"
+      ],
+      "currency": "швейцарский франк",
+      "government": "конституционная монархия",
+      "isEU": false
+    },
+    {
+      "id": 21,
+      "name": "Люксембург",
+      "capital": "Люксембург",
+      "population": 680000,
+      "area": 2586,
+      "region": "Западная Европа",
+      "languages": [
+        "люксембургский",
+        "французский",
+        "немецкий"
+      ],
+      "currency": "евро",
+      "government": "парламентская монархия",
+      "isEU": true
+    },
+    {
+      "id": 22,
+      "name": "Мальта",
+      "capital": "Валлетта",
+      "population": 570000,
+      "area": 316,
+      "region": "Южная Европа",
+      "languages": [
+        "мальтийский",
+        "английский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 23,
+      "name": "Молдова",
+      "capital": "Кишинёв",
+      "population": 2400000,
+      "area": 33846,
+      "region": "Восточная Европа",
+      "languages": [
+        "румынский"
+      ],
+      "currency": "молдавский лей",
+      "government": "парламентская республика",
+      "isEU": false
+    },
+    {
+      "id": 24,
+      "name": "Монако",
+      "capital": "Монако",
+      "population": 39000,
+      "area": 2.08,
+      "region": "Западная Европа",
+      "languages": [
+        "французский"
+      ],
+      "currency": "евро",
+      "government": "конституционная монархия",
+      "isEU": false
+    },
+    {
+      "id": 25,
+      "name": "Нидерланды",
+      "capital": "Амстердам",
+      "population": 18000000,
+      "area": 41543,
+      "region": "Западная Европа",
+      "languages": [
+        "нидерландский"
+      ],
+      "currency": "евро",
+      "government": "парламентская монархия",
+      "isEU": true
+    },
+    {
+      "id": 26,
+      "name": "Норвегия",
+      "capital": "Осло",
+      "population": 5600000,
+      "area": 385207,
+      "region": "Северная Европа",
+      "languages": [
+        "норвежский"
+      ],
+      "currency": "норвежская крона",
+      "government": "парламентская монархия",
+      "isEU": false
+    },
+    {
+      "id": 27,
+      "name": "Польша",
+      "capital": "Варшава",
+      "population": 37500000,
+      "area": 312696,
+      "region": "Восточная Европа",
+      "languages": [
+        "польский"
+      ],
+      "currency": "злотый",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 28,
+      "name": "Португалия",
+      "capital": "Лиссабон",
+      "population": 10700000,
+      "area": 92212,
+      "region": "Южная Европа",
+      "languages": [
+        "португальский"
+      ],
+      "currency": "евро",
+      "government": "смешанная республика",
+      "isEU": true
+    },
+    {
+      "id": 29,
+      "name": "Россия",
+      "capital": "Москва",
+      "population": 146000000,
+      "area": 17098246,
+      "region": "Восточная Европа",
+      "languages": [
+        "русский"
+      ],
+      "currency": "российский рубль",
+      "government": "смешанная республика",
+      "isEU": false
+    },
+    {
+      "id": 30,
+      "name": "Румыния",
+      "capital": "Бухарест",
+      "population": 19000000,
+      "area": 238397,
+      "region": "Восточная Европа",
+      "languages": [
+        "румынский"
+      ],
+      "currency": "румынский лей",
+      "government": "смешанная республика",
+      "isEU": true
+    },
+    {
+      "id": 31,
+      "name": "Сан-Марино",
+      "capital": "Сан-Марино",
+      "population": 34000,
+      "area": 61,
+      "region": "Южная Европа",
+      "languages": [
+        "итальянский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": false
+    },
+    {
+      "id": 32,
+      "name": "Северная Македония",
+      "capital": "Скопье",
+      "population": 1800000,
+      "area": 25713,
+      "region": "Южная Европа",
+      "languages": [
+        "македонский",
+        "албанский"
+      ],
+      "currency": "денар",
+      "government": "парламентская республика",
+      "isEU": false
+    },
+    {
+      "id": 33,
+      "name": "Сербия",
+      "capital": "Белград",
+      "population": 6600000,
+      "area": 77474,
+      "region": "Южная Европа",
+      "languages": [
+        "сербский"
+      ],
+      "currency": "сербский динар",
+      "government": "парламентская республика",
+      "isEU": false
+    },
+    {
+      "id": 34,
+      "name": "Словакия",
+      "capital": "Братислава",
+      "population": 5400000,
+      "area": 49035,
+      "region": "Восточная Европа",
+      "languages": [
+        "словацкий"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 35,
+      "name": "Словения",
+      "capital": "Любляна",
+      "population": 2100000,
+      "area": 20273,
+      "region": "Южная Европа",
+      "languages": [
+        "словенский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 36,
+      "name": "Украина",
+      "capital": "Киев",
+      "population": 37000000,
+      "area": 603628,
+      "region": "Восточная Европа",
+      "languages": [
+        "украинский"
+      ],
+      "currency": "гривна",
+      "government": "смешанная республика",
+      "isEU": false
+    },
+    {
+      "id": 37,
+      "name": "Финляндия",
+      "capital": "Хельсинки",
+      "population": 5600000,
+      "area": 338455,
+      "region": "Северная Европа",
+      "languages": [
+        "финский",
+        "шведский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 38,
+      "name": "Франция",
+      "capital": "Париж",
+      "population": 66000000,
+      "area": 551695,
+      "region": "Западная Европа",
+      "languages": [
+        "французский"
+      ],
+      "currency": "евро",
+      "government": "смешанная республика",
+      "isEU": true
+    },
+    {
+      "id": 39,
+      "name": "Хорватия",
+      "capital": "Загреб",
+      "population": 3900000,
+      "area": 56594,
+      "region": "Южная Европа",
+      "languages": [
+        "хорватский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 40,
+      "name": "Черногория",
+      "capital": "Подгорица",
+      "population": 620000,
+      "area": 13812,
+      "region": "Южная Европа",
+      "languages": [
+        "черногорский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": false
+    },
+    {
+      "id": 41,
+      "name": "Чехия",
+      "capital": "Прага",
+      "population": 10900000,
+      "area": 78871,
+      "region": "Восточная Европа",
+      "languages": [
+        "чешский"
+      ],
+      "currency": "чешская крона",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 42,
+      "name": "Швейцария",
+      "capital": "Берн",
+      "population": 9000000,
+      "area": 41285,
+      "region": "Западная Европа",
+      "languages": [
+        "немецкий",
+        "французский",
+        "итальянский",
+        "ретороманский"
+      ],
+      "currency": "швейцарский франк",
+      "government": "директориальная республика",
+      "isEU": false
+    },
+    {
+      "id": 43,
+      "name": "Швеция",
+      "capital": "Стокгольм",
+      "population": 10600000,
+      "area": 450295,
+      "region": "Северная Европа",
+      "languages": [
+        "шведский"
+      ],
+      "currency": "шведская крона",
+      "government": "парламентская монархия",
+      "isEU": true
+    },
+    {
+      "id": 44,
+      "name": "Эстония",
+      "capital": "Таллин",
+      "population": 1370000,
+      "area": 45227,
+      "region": "Северная Европа",
+      "languages": [
+        "эстонский"
+      ],
+      "currency": "евро",
+      "government": "парламентская республика",
+      "isEU": true
+    },
+    {
+      "id": 45,
+      "name": "Кипр",
+      "capital": "Никосия",
+      "population": 1000000,
+      "area": 9251,
+      "region": "Восточное Средиземноморье",
+      "languages": [
+        "греческий",
+        "турецкий"
+      ],
+      "currency": "евро",
+      "government": "президентская республика",
+      "isEU": true
+    }
+  ]
+}
