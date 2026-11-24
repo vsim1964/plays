@@ -9,7 +9,11 @@ const status = document.querySelector("#status");
 const emptyMessage = document.querySelector("#empty");
 
 export function readFilters() {
-  return { search: searchInput.value, rank: rankSelect.value, sort: sortSelect.value };
+  return {
+    search: searchInput.value,
+    rank: rankSelect.value,
+    sort: sortSelect.value,
+  };
 }
 
 export function bindEvents(onFilterChange, onReload) {
@@ -32,8 +36,12 @@ export function renderFighters(fighters) {
   fighters.forEach((fighter, index) => {
     const row = document.createElement("tr");
     const values = [
-      index + 1, fighter.name, fighter.age,
-      fighter.draftCity, fighter.rank, fighter.role
+      index + 1,
+      fighter.name,
+      fighter.age,
+      fighter.draftCity,
+      fighter.rank,
+      fighter.role,
     ];
 
     for (const value of values) {
