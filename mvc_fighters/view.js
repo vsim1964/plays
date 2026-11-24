@@ -1,4 +1,3 @@
-// VIEW: только DOM и внешний вид страницы. Не обращается к JSON.
 const tbody = document.querySelector("#fighters");
 const searchInput = document.querySelector("#search");
 const rankSelect = document.querySelector("#rank");
