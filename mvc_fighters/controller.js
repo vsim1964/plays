@@ -1,10 +1,26 @@
-import { loadFighters, getRanks, getTotalCount, getVisibleFighters } from "./model.js";
-import { bindEvents, readFilters, renderRanks, renderFighters, renderCounter, showStatus, setLoading } from "./view.js";
+import {
+  loadFighters,
+  getRanks,
+  getTotalCount,
+  getVisibleFighters,
+} from "./model.js";
+import {
+  bindEvents,
+  readFilters,
+  renderRanks,
+  renderFighters,
+  renderCounter,
+  showStatus,
+  setLoading,
+} from "./view.js";
 
-// CONTROLLER: связывает действия пользователя, модель и представление.
 function updateScreen() {
   const filters = readFilters();
-  const visible = getVisibleFighters(filters.search, filters.rank, filters.sort);
+  const visible = getVisibleFighters(
+    filters.search,
+    filters.rank,
+    filters.sort
+  );
 
   console.log("[CONTROLLER] Обновляем представление");
   renderFighters(visible);
