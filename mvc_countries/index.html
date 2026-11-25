@@ -4,79 +4,189 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Европейские государства</title>
+
   <link rel="stylesheet" href="./style.css">
   <script type="module" src="./main.js"></script>
 </head>
 
 <body>
+
   <main class="page">
+
+    <!-- Заголовок приложения -->
+
     <header class="header">
-      <p class="eyebrow">Учебный проект · JavaScript без классов</p>
+      <p class="eyebrow">Учебный проект MVC</p>
       <h1>Европейские государства</h1>
-      <p class="intro">Один набор данных — три обязанности: модель хранит и отбирает, представление рисует, контроллер связывает действия.</p>
+      <p class="intro">
+        Интерактивный справочник европейских государств
+      </p>
     </header>
 
+    <!-- Схема архитектуры -->
+
     <section class="architecture" aria-label="Архитектура MVC">
-      <div class="step"><b>countries.json</b><small>Источник данных</small></div>
+
+      <div class="step">
+        <b>countries.json</b>
+        <small>Источник данных</small>
+      </div>
+
       <span class="arrow">→</span>
-      <div class="step"><b>data.js</b><small>fetch()</small></div>
+
+      <div class="step">
+        <b>data.js</b>
+        <small>Получение данных</small>
+      </div>
+
       <span class="arrow">→</span>
-      <div class="step model"><b>model.js</b><small>Данные и фильтры</small></div>
+
+      <div class="step model">
+        <b>model.js</b>
+        <small>Хранение и обработка данных</small>
+      </div>
+
       <span class="arrow">↔</span>
-      <div class="step controller"><b>controller.js</b><small>Управление</small></div>
-      <span class="arrow">→</span>
-      <div class="step view"><b>view.js</b><small>Отображение</small></div>
+
+      <div class="step controller">
+        <b>controller.js</b>
+        <small>Управление приложением</small>
+      </div>
+
+      <span class="arrow">↔</span>
+
+      <div class="step view">
+        <b>view.js</b>
+        <small>Работа с интерфейсом</small>
+      </div>
+
     </section>
-    <p class="architecture-note">index.html подключает main.js; main.js запускает контроллер. Кнопки и поля ввода передают события контроллеру, который обращается к модели и обновляет представление.</p>
+
+    <p class="architecture-note">
+      main.js запускает контроллер.
+      Контроллер организует взаимодействие модели
+      и представления.
+    </p>
 
     <section class="panel">
+
+      <!-- Панель управления -->
+
       <div class="toolbar">
-        <label>Поиск
+
+        <!-- Поиск -->
+
+        <label for="search">
+          Поиск
           <input id="search" type="search" placeholder="Например: Франция">
         </label>
-        <label>Членство в Евроюзе
-          <select id="rank">
-            <option value="">Все страны</option>
+
+        <!-- Фильтрация -->
+
+        <label for="membership">
+          Членство в Евросоюзе
+
+          <select id="membership">
+            <option value="all">Все страны</option>
+            <option value="true">Члены ЕС</option>
+            <option value="false">Не члены ЕС</option>
           </select>
         </label>
-        <label>Сортировка
+
+        <!-- Сортировка -->
+
+        <label for="sort">
+          Сортировка
+
           <select id="sort">
             <option value="default">Как в JSON</option>
-            <option value="name">По имени (А—Я)</option>
+            <option value="name">По названию (А—Я)</option>
             <option value="populationAsc">По населению ↑</option>
             <option value="populationDesc">По населению ↓</option>
-            <option value="areaAsc">По территории ↑</option>
-            <option value="areaDesc">По территории ↓</option>
+            <option value="areaAsc">По площади ↑</option>
+            <option value="areaDesc">По площади ↓</option>
           </select>
         </label>
-        <button id="reload" type="button">Загрузить JSON заново</button>
+
+        <!-- Повторная загрузка -->
+
+        <button id="reload" type="button">
+          Загрузить JSON заново
+        </button>
+
       </div>
+
+      <!-- Информационная панель -->
+
       <div class="summary">
-        <strong id="counter">Стран: —</strong>
-        <span id="status" role="status" aria-live="polite">Ожидание загрузки…</span>
+
+        <strong id="counter">
+          Стран: —
+        </strong>
+
+        <span id="status" role="status" aria-live="polite">
+          Ожидание загрузки…
+        </span>
+
       </div>
+
+      <!-- Таблица государств -->
+
       <div class="table-wrap">
+
         <table>
+
           <thead>
             <tr>
-              <th>Государство</th>
-              <th>Столица</th>
-              <th>Население</th>
-              <th>Площадь</th>
-              <th>Членство в Евросюзе</th>
+              <th scope="col">Государство</th>
+              <th scope="col">Столица</th>
+              <th scope="col">Население</th>
+              <th scope="col">Площадь, км²</th>
+              <th scope="col">Членство в Евросоюзе</th>
             </tr>
           </thead>
-          <tbody id="fighters"></tbody>
+
+          <tbody id="countries"></tbody>
+
         </table>
+
       </div>
-      <p id="empty" class="empty" hidden>По выбранным условиям бойцы не найдены.</p>
+
+      <!-- Сообщение об отсутствии результатов -->
+
+      <p id="empty" class="empty" hidden>
+        По выбранным условиям государства не найдены.
+      </p>
+
     </section>
+
+    <!-- Объяснение работы приложения -->
+
     <section class="explanation">
+
       <h2>Что происходит при поиске?</h2>
-      <p>Событие <code>input</code> → функция контроллера → функция модели <code>getVisibleFighters()</code> → функция представления <code>renderFighters()</code> → новая таблица HTML. Повторного запроса к JSON при фильтрации нет: модель использует уже загруженный массив.</p>
+
+      <p>
+        Событие <code>input</code> вызывает обработчик
+        контроллера. Контроллер передаёт поисковый запрос
+        модели, получает от неё отфильтрованный массив
+        посредством функции <code>getVisibleCountries()</code>
+        и передаёт его функции представления
+        <code>renderCountries()</code>.
+      </p>
+
+      <p>
+        Повторного запроса к JSON при поиске,
+        фильтрации и сортировке не происходит.
+        Модель использует уже загруженный массив.
+      </p>
+
     </section>
+
   </main>
+
 </body>
 
 </html>
