@@ -43,6 +43,16 @@ th,td{padding:10px;border:1px solid var(--line);text-align:left}
 #stack-lab h3{margin-top:0}
 #stack-description{min-height:3.5em}
 @media(max-width:600px){.stack-grid{grid-template-columns:1fr}.stack-sequence{font-size:12px}.stack-sequence>div{padding:4px}.stack-sequence .stack-frame{font-size:12px;padding:5px}}
+
+#event-lab h3{margin-top:0}
+.el-runtime{border:1px solid var(--line);border-radius:8px;padding:14px;background:#faf7ef;font:15px/1.5 system-ui,sans-serif}
+.el-label{font-weight:700;margin-bottom:14px}
+.el-well{min-height:245px;display:flex;flex-direction:column;justify-content:center;gap:8px;border:1px solid var(--line);border-radius:6px;padding:12px}
+.el-queue{border:1px solid var(--line);padding:12px;border-radius:6px;background:#fffdf8}
+.el-queue>div{margin-top:8px;min-height:44px}
+.el-loop{margin:12px 0 0;padding:10px;border-left:3px solid var(--accent);background:#e4f1ec}
+#el-description{min-height:4em;margin-top:16px}
+#el-console{min-height:150px}
 </style>
 </head>
 <body>
@@ -54,7 +64,7 @@ th,td{padding:10px;border:1px solid var(--line);text-align:left}
 <nav id="contents" aria-label="Оглавление"></nav>
 <article id="lessons">
 <section>
-<h2 id="call-stack">Стек вызовов и принцип LIFO</h2>
+<h2 id="call-stack">1. Стек вызовов и принцип LIFO</h2>
 <p>Противоречие возникает из-за того, что мы смешиваем порядок вызова функций с порядком их завершения. Стек вызовов (Call Stack) не определяет, какая функция должна быть вызвана первой. Порядок вызова определяется самим программным кодом.</p>
 <p>Рассмотрим две принципиально разные ситуации.</p>
 <h3>1. Последовательный вызов функций</h3>
@@ -140,6 +150,77 @@ first();</code></pre>
 <p><strong>Последняя из вложенных функций не первой начинает выполняться, а первой завершает своё выполнение.</strong></p>
 <p>Первая функция не может закончить свою работу, пока не завершится вызванная ею вторая функция, а вторая — пока не завершится вызванная ею третья. Никакого противоречия с принципом синхронного программирования здесь нет. Напротив, стек вызовов и служит механизмом организации такого выполнения.</p>
 </section>
+<section>
+<h2 id="event-loop">2. Как работает цикл событий (Event Loop)</h2>
+<p>Допустим, программист написал пять функций и последовательно вызывает их. В третьей функции предусмотрена операция, которую необходимо выполнить с задержкой. Посмотрим, как в этом случае распределяется работа между движком JavaScript и браузером.</p>
+<pre><code>function first() {
+    console.log("Первая функция");
+}
+
+function second() {
+    console.log("Вторая функция");
+}
+
+function third() {
+    setTimeout(function task() {
+        console.log("Отложенная операция");
+    }, 2000);
+}
+
+function fourth() {
+    console.log("Четвёртая функция");
+}
+
+function fifth() {
+    console.log("Пятая функция");
+}
+
+first();
+second();
+third();
+fourth();
+fifth();</code></pre>
+<h3>От стека вызовов к отложенной операции</h3>
+<p>Движок JavaScript начинает выполнение обычного скрипта, создаёт глобальный контекст выполнения и помещает его в стек вызовов. Контекст выполнения — это служебная информация, необходимая для исполнения данного участка кода. Затем движок вызывает первую функцию, помещает её контекст поверх глобального, выполняет её и снимает её контекст со стека. В том же порядке выполняется вторая функция.</p>
+<p>При выполнении третьей функции движок встречает <code>setTimeout()</code>. Посредством этой функции программист поручает браузеру вызвать функцию <code>task()</code> через заданный промежуток времени. Браузер регистрирует таймер и сохраняет ссылку на переданную ему функцию. Движок не ждёт истечения времени: вызов <code>setTimeout()</code> завершается, затем завершается третья функция, после чего выполняются четвёртая и пятая.</p>
+<p>Функция <code>setTimeout()</code> предоставляется браузером, а не самим языком JavaScript. Подобные функции, методы и объекты, посредством которых JavaScript обращается к механизмам браузера, называются Web APIs (программные интерфейсы браузера). В данном примере используется интерфейс доступа к механизму таймеров. Сам таймер отслеживает время, но не исполняет тело функции <code>task()</code>.</p>
+<h3>От таймера к очереди задач</h3>
+<p>Тем временем браузер отслеживает истечение заданного времени. Когда оно истекло, браузер помещает в очередь задач (Task Queue) поручение вызвать зарегистрированную функцию. Если движок JavaScript ещё занят выполнением кода, задача остаётся в очереди. Функция <code>task()</code> до этого момента вообще не вызывалась: в стеке не было её контекста, поэтому и переносить его из стека в очередь не требовалось.</p>
+<p>Когда выполнение текущей задачи завершится и стек освободится, среда выполнения, после обработки накопившихся микрозадач, сможет выбрать следующую обычную задачу. Движок вызовет соответствующую функцию, создаст её контекст выполнения, поместит его в стек и выполнит содержащиеся в ней инструкции. Микрозадачи — особый вид отложенных задач; подробно мы познакомимся с ними при изучении Promise.</p>
+<p>Этот циклически повторяющийся процесс обработки задач называется <strong>Event Loop (цикл событий)</strong>. Event Loop — не отдельный исполнитель кода, а алгоритм работы среды выполнения, который организует переход от завершившейся задачи к следующей.</p>
+<p>При обычных условиях результат будет следующим:</p>
+<pre><code>Первая функция
+Вторая функция
+Четвёртая функция
+Пятая функция
+Отложенная операция</code></pre>
+<p>Последнее сообщение появится примерно через две секунды после регистрации таймера или позднее, если основной поток занят.</p>
+<div class="lab" id="event-lab">
+<h3>Лаборатория. Путь отложенного вызова</h3>
+<p class="stack-caption" id="el-step"></p>
+<div class="el-runtime">
+<p class="el-label">Среда выполнения — браузер</p>
+<div class="stack-grid">
+<div><strong>Движок JavaScript</strong><div class="stack-caption">Call Stack — стек вызовов</div><div class="stack-well" id="el-stack"></div></div>
+<div><strong>Механизм таймеров браузера</strong><div class="stack-caption">Доступ через Web API: setTimeout()</div><div class="el-well" id="el-timer"></div></div>
+</div>
+<div class="el-queue"><strong>Task Queue — очередь задач браузера</strong><div id="el-queue"></div></div>
+<p class="el-loop" id="el-loop"></p>
+</div>
+<p class="stack-caption">Консоль</p><div class="console" id="el-console"></div>
+<p id="el-description" aria-live="polite"></p>
+<div class="stack-controls"><button type="button" id="el-reset">Сначала</button><button type="button" id="el-prev">Назад</button><button type="button" id="el-next">Далее</button></div>
+<p class="stack-caption">Пошаговая модель, а не запись работы реального движка. Внутренние вызовы console.log() опущены. Предполагается, что исходный скрипт завершается раньше таймера и других задач нет.</p>
+</div>
+<h3>Распределение работы</h3>
+<table><thead><tr><th scope="col">Компонент</th><th scope="col">Где находится и за что отвечает</th></tr></thead><tbody>
+<tr><td>Call Stack</td><td>Движок JavaScript: хранит контексты текущих вызовов функций.</td></tr>
+<tr><td>Web APIs</td><td>Интерфейсы доступа к механизмам браузера, в том числе к таймерам и сетевым запросам.</td></tr>
+<tr><td>Task Queue</td><td>Среда выполнения: хранит готовые к выполнению задачи.</td></tr>
+<tr><td>Event Loop</td><td>Среда выполнения: циклический алгоритм обработки задач.</td></tr>
+</tbody></table>
+<p>Асинхронность становится возможной благодаря разделению двух процессов: ожидания наступления определённого события и исполнения JavaScript-кода после наступления этого события. Первым в нашем примере занимается механизм таймеров браузера, вторым — движок JavaScript.</p>
+</section>
 <!-- Новые разделы курса добавляются сюда по указанию автора. -->
 </article>
 </main>
@@ -201,6 +282,52 @@ if (headings.length) {
  byId('stack-reset').addEventListener('click',()=>{step=0;render();});
  byId('stack-prev').addEventListener('click',()=>{if(step>0){step--;render();}});
  byId('stack-next').addEventListener('click',()=>{if(step<states.length-1){step++;render();}});
+ render();
+})();
+
+(function(){
+ const g='Глобальный контекст';
+ const waiting=['Таймер: 2000 мс','Ссылка на task'];
+ const states=[
+ [[g],[],[],0,'Выполняется исходный скрипт.','Создан глобальный контекст выполнения.'],
+ [[g,'first()'],[],[],1,'Текущая задача продолжается.','Первая функция вызвана и выводит сообщение.'],
+ [[g,'second()'],[],[],2,'Текущая задача продолжается.','Первая функция завершилась. Теперь выполняется вторая.'],
+ [[g,'third()','setTimeout()'],waiting,[],2,'Текущая задача продолжается.','Третья функция вызывает setTimeout(). Браузер регистрирует таймер и сохраняет ссылку на task.'],
+ [[g,'third()'],waiting,[],2,'Текущая задача продолжается.','setTimeout() завершился. Третья функция заканчивает работу; task ещё не вызывалась.'],
+ [[g,'fourth()'],waiting,[],3,'Текущая задача продолжается.','Третья функция завершилась. Четвёртая выполняется, пока браузер отслеживает время.'],
+ [[g,'fifth()'],waiting,[],4,'Текущая задача продолжается.','Четвёртая функция завершилась. Выполняется пятая.'],
+ [[],waiting,[],4,'Текущая задача завершена; готовых задач пока нет.','Исходный скрипт завершился. Стек пуст, таймер ещё работает.'],
+ [[],[],['Вызвать task()'],4,'В очереди появилась готовая задача.','Время истекло. Браузер поставил задачу вызова task() в очередь.'],
+ [['task()'],[],[],5,'Началась следующая задача.','Среда выбрала задачу. Движок впервые вызвал task(), поместил её контекст в стек и выполнил инструкции.'],
+ [[],[],[],5,'Цикл продолжается: ожидание новых задач.','Функция task() завершилась, её контекст снят со стека.']
+ ];
+ const logs=['Первая функция','Вторая функция','Четвёртая функция','Пятая функция','Отложенная операция'];
+ const byId=id=>document.getElementById(id);
+ let step=0;
+ function fill(id,items,empty,stack=false){
+  const well=byId(id);well.replaceChildren();
+  if(!items.length){const el=document.createElement('div');el.className='stack-empty';el.textContent=empty;well.append(el);return;}
+  (stack?[...items].reverse():items).forEach((name,i)=>{
+   const el=document.createElement('div');el.className='stack-frame'+(stack&&i===0?' active':'');el.textContent=name;
+   if(stack){const label=document.createElement('small');label.textContent=i===0?'Активный контекст':'Ожидает возврата управления';el.append(label);}
+   well.append(el);
+  });
+ }
+ function render(){
+  const [stack,timer,queue,count,loop,desc]=states[step];
+  byId('el-step').textContent='Шаг '+(step+1)+' из '+states.length;
+  fill('el-stack',stack,'Стек пуст',true);
+  fill('el-timer',timer,'Нет активного таймера');
+  fill('el-queue',queue,'Очередь пуста');
+  byId('el-loop').textContent='Event Loop: '+loop;
+  byId('el-console').textContent=logs.slice(0,count).join('\n')||'Нет сообщений';
+  byId('el-description').textContent=desc;
+  byId('el-prev').disabled=step===0;
+  byId('el-next').disabled=step===states.length-1;
+ }
+ byId('el-reset').addEventListener('click',()=>{step=0;render();});
+ byId('el-prev').addEventListener('click',()=>{if(step>0){step--;render();}});
+ byId('el-next').addEventListener('click',()=>{if(step<states.length-1){step++;render();}});
  render();
 })();
 </script>
