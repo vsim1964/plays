@@ -28,6 +28,21 @@ button:disabled{opacity:.5;cursor:default}
 table{width:100%;border-collapse:collapse;font-size:16px}
 th,td{padding:10px;border:1px solid var(--line);text-align:left}
 @media(max-width:600px){main{padding:30px 18px 48px}body{font-size:17px}}
+
+.stack-sequence{display:flex;align-items:center;justify-content:space-between;gap:8px;font:15px system-ui,sans-serif}
+.stack-sequence>div{flex:1;text-align:center;border:1px solid var(--line);border-radius:8px;padding:10px}
+.stack-frame{border:1px solid var(--line);border-radius:6px;background:var(--paper);padding:10px;text-align:center;font:15px/1.4 Consolas,monospace}
+.stack-frame small{display:block;font:12px/1.5 system-ui,sans-serif;margin-top:4px}
+.stack-frame.active{border-color:var(--accent);background:#e4f1ec}
+.stack-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;font:15px/1.5 system-ui,sans-serif;margin-bottom:16px}
+.stack-well{display:flex;flex-direction:column;justify-content:flex-end;gap:8px;border:1px solid var(--line);border-radius:6px;padding:12px;min-height:245px}
+.stack-grid .console{min-height:245px}
+.stack-empty{margin:auto;color:#64736e;text-align:center}
+.stack-caption{font:14px/1.5 system-ui,sans-serif;color:#52655f;margin:12px 0}
+.stack-controls{display:flex;flex-wrap:wrap;gap:8px}
+#stack-lab h3{margin-top:0}
+#stack-description{min-height:3.5em}
+@media(max-width:600px){.stack-grid{grid-template-columns:1fr}.stack-sequence{font-size:12px}.stack-sequence>div{padding:4px}.stack-sequence .stack-frame{font-size:12px;padding:5px}}
 </style>
 </head>
 <body>
@@ -38,6 +53,93 @@ th,td{padding:10px;border:1px solid var(--line);text-align:left}
 </header>
 <nav id="contents" aria-label="Оглавление"></nav>
 <article id="lessons">
+<section>
+<h2 id="call-stack">Стек вызовов и принцип LIFO</h2>
+<p>Противоречие возникает из-за того, что мы смешиваем порядок вызова функций с порядком их завершения. Стек вызовов (Call Stack) не определяет, какая функция должна быть вызвана первой. Порядок вызова определяется самим программным кодом.</p>
+<p>Рассмотрим две принципиально разные ситуации.</p>
+<h3>1. Последовательный вызов функций</h3>
+<pre><code>function first() {
+    console.log("Первая");
+}
+
+function second() {
+    console.log("Вторая");
+}
+
+function third() {
+    console.log("Третья");
+}
+
+first();
+second();
+third();</code></pre>
+<p>Результат:</p>
+<pre><code>Первая
+Вторая
+Третья</code></pre>
+<p>Первая функция вызывается, полностью выполняется и её кадр удаляется из стека. Только после этого вызывается вторая функция, а после её завершения — третья. Функции не накапливаются в стеке. Каждая завершается до вызова следующей.</p>
+<div class="lab">
+<div class="stack-sequence" aria-label="Последовательное заполнение стека">
+<div><small>Этап 1</small><div class="stack-frame">first()</div></div><span aria-hidden="true">→</span>
+<div><small>Этап 2</small><div class="stack-frame">second()</div></div><span aria-hidden="true">→</span>
+<div><small>Этап 3</small><div class="stack-frame">third()</div></div>
+</div>
+<p class="stack-caption">Каждый кадр снимается со стека до появления следующего.</p>
+</div>
+<h3>2. Вложенный вызов функций</h3>
+<p>Теперь изменим код так, чтобы первая функция вызывала вторую, а вторая — третью.</p>
+<pre><code>function first() {
+    console.log("Начало первой");
+    second();
+    console.log("Конец первой");
+}
+
+function second() {
+    console.log("Начало второй");
+    third();
+    console.log("Конец второй");
+}
+
+function third() {
+    console.log("Начало третьей");
+    console.log("Конец третьей");
+}
+
+first();</code></pre>
+<p>Результат:</p>
+<pre><code>Начало первой
+Начало второй
+Начало третьей
+Конец третьей
+Конец второй
+Конец первой</code></pre>
+<p>Первая функция начинает выполняться первой. Но в процессе своего выполнения она вызывает вторую функцию. Первая функция ещё не завершила работу, поэтому её кадр остаётся в стеке. Вторая функция, в свою очередь, вызывает третью, также не завершив собственной работы. В результате в стеке одновременно находятся три незавершённых вызова.</p>
+<div class="lab" id="stack-lab">
+<h3>Пошаговое выполнение программы</h3>
+<p class="stack-caption" id="stack-step"></p>
+<div class="stack-grid">
+<div><strong>Call Stack</strong><div id="stack-frames" class="stack-well" aria-live="polite"></div></div>
+<div><strong>Консоль</strong><div id="stack-console" class="console" aria-live="polite"></div></div>
+</div>
+<p id="stack-description" aria-live="polite"></p>
+<div class="stack-controls">
+<button type="button" id="stack-reset">Сначала</button>
+<button type="button" id="stack-prev">Назад</button>
+<button type="button" id="stack-next">Далее</button>
+</div>
+<p class="stack-caption">Для простоты показаны только вызовы трёх пользовательских функций. Вызовы console.log() и контекст скрипта не показаны.</p>
+</div>
+<h3>3. В чём смысл принципа LIFO</h3>
+<table><thead><tr><th scope="col">Действие</th><th scope="col">Порядок</th></tr></thead><tbody>
+<tr><td>Начало выполнения функций</td><td>Первая, вторая, третья</td></tr>
+<tr><td>Завершение выполнения функций</td><td>Третья, вторая, первая</td></tr>
+<tr><td>Добавление кадров в стек</td><td>Первая, вторая, третья</td></tr>
+<tr><td>Удаление кадров из стека</td><td>Третья, вторая, первая</td></tr>
+</tbody></table>
+<p>Принцип LIFO (Last In, First Out) относится именно к порядку добавления и удаления кадров вызовов из стека, а не к порядку начала выполнения функций.</p>
+<p><strong>Последняя из вложенных функций не первой начинает выполняться, а первой завершает своё выполнение.</strong></p>
+<p>Первая функция не может закончить свою работу, пока не завершится вызванная ею вторая функция, а вторая — пока не завершится вызванная ею третья. Никакого противоречия с принципом синхронного программирования здесь нет. Напротив, стек вызовов и служит механизмом организации такого выполнения.</p>
+</section>
 <!-- Новые разделы курса добавляются сюда по указанию автора. -->
 </article>
 </main>
@@ -59,6 +161,48 @@ if (headings.length) {
  }
  contents.append(list);
 }
+
+(function(){
+ const states=[
+ [[],0,'Ни одна пользовательская функция ещё не вызвана.'],
+ [['first()'],1,'Начала выполняться первая функция.'],
+ [['first()','second()'],2,'Первая функция вызвала вторую и ожидает её завершения.'],
+ [['first()','second()','third()'],3,'Вторая функция вызвала третью. Теперь выполняется третья функция.'],
+ [['first()','second()'],4,'Третья функция завершилась. Возобновляется выполнение второй.'],
+ [['first()'],5,'Вторая функция завершилась. Возобновляется выполнение первой.'],
+ [[],6,'Первая функция завершилась. Стек пользовательских вызовов пуст.']
+ ];
+ const logs=['Начало первой','Начало второй','Начало третьей','Конец третьей','Конец второй','Конец первой'];
+ const byId=id=>document.getElementById(id);
+ let step=0;
+ function render(){
+  const [frames,count,description]=states[step];
+  byId('stack-step').textContent='Шаг '+(step+1)+' из '+states.length;
+  const well=byId('stack-frames');
+  well.replaceChildren();
+  if(!frames.length){
+   const empty=document.createElement('div');
+   empty.className='stack-empty';empty.textContent='Стек пуст';well.append(empty);
+  }else{
+   [...frames].reverse().forEach((name,i)=>{
+    const frame=document.createElement('div');
+    frame.className='stack-frame'+(i===0?' active':'');
+    frame.textContent=name;
+    const status=document.createElement('small');
+    status.textContent=i===0?'Выполняется':'Ожидает завершения вызова';
+    frame.append(status);well.append(frame);
+   });
+  }
+  byId('stack-console').textContent=logs.slice(0,count).join('\n')||'Нет сообщений';
+  byId('stack-description').textContent=description;
+  byId('stack-prev').disabled=step===0;
+  byId('stack-next').disabled=step===states.length-1;
+ }
+ byId('stack-reset').addEventListener('click',()=>{step=0;render();});
+ byId('stack-prev').addEventListener('click',()=>{if(step>0){step--;render();}});
+ byId('stack-next').addEventListener('click',()=>{if(step<states.length-1){step++;render();}});
+ render();
+})();
 </script>
 </body>
 </html>
