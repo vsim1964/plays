@@ -43,6 +43,9 @@
 .el-component{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:10px;min-width:0}
 @media(max-width:600px){.runtime-parts{grid-template-columns:1fr}}
 .stack-frame{background:#f1f6f2}.stack-caption{color:var(--muted)}.runtime-map{padding:18px}.stack-grid>div{min-width:0}.el-runtime{background:var(--bg)}.stack-controls{margin:12px 0}.lab-body>h3:first-child{margin-top:0}.stack-sequence>div{background:var(--paper)}.stack-frame.active{border-color:var(--accent)}@media(max-width:800px){.stack-grid,.runtime-parts{grid-template-columns:1fr}}
+
+/* Автономная подсветка синтаксиса JavaScript */
+.code .js-keyword{color:#d9a7f5}.code .js-string{color:#b8e49a}.code .js-number{color:#f8c48b}.code .js-comment{color:#9aafb4;font-style:italic}.code .js-function{color:#93d9f5}.code .js-builtin{color:#f2d38b}.code .js-operator{color:#84d9d0}.code .js-punctuation{color:#b8cbd2}
 </style>
 </head>
 <body>
@@ -59,7 +62,7 @@
 <p>Противоречие возникает из-за того, что мы смешиваем порядок вызова функций с порядком их завершения. Стек вызовов (Call Stack) не определяет, какая функция должна быть вызвана первой. Порядок вызова определяется самим программным кодом.</p>
 <p>Рассмотрим две принципиально разные ситуации.</p>
 <h3>1. Последовательный вызов функций</h3>
-<div class="code"><pre><code>function first() {
+<div class="code"><pre><code class="language-javascript">function first() {
     console.log("Первая");
 }
 
@@ -89,7 +92,7 @@ third();</code></pre></div>
 </div>
 <h3>2. Вложенный вызов функций</h3>
 <p>Теперь изменим код так, чтобы первая функция вызывала вторую, а вторая — третью.</p>
-<div class="code"><pre><code>function first() {
+<div class="code"><pre><code class="language-javascript">function first() {
     console.log("Начало первой");
     second();
     console.log("Конец первой");
@@ -164,7 +167,7 @@ first();</code></pre></div>
 </div>
 <h3>Как эти части взаимодействуют</h3>
 <p>Допустим, программист написал пять функций и последовательно вызывает их. В третьей функции предусмотрен отложенный вызов другой функции. Теперь, когда мы знаем, где находится каждый механизм, проследим за выполнением программы.</p>
-<div class="code"><pre><code>function first() {
+<div class="code"><pre><code class="language-javascript">function first() {
     console.log("Первая функция");
 }
 
@@ -342,6 +345,34 @@ window.addEventListener('scroll',markChapter,{passive:true});markChapter();
  byId('el-prev').addEventListener('click',()=>{if(step>0){step--;render();}});
  byId('el-next').addEventListener('click',()=>{if(step<states.length-1){step++;render();}});
  render();
+})();
+
+(function(){
+ const keywords=new Set('function const let var return async await if else for while do switch case break continue new throw try catch finally class extends import export from default typeof instanceof in of delete void yield this super true false null undefined'.split(' '));
+ const builtins=new Set('console setTimeout clearTimeout setInterval clearInterval Promise fetch document window Math Date JSON Array Object Number String Boolean Error Map Set'.split(' '));
+ const pattern=/(\/\/[^\n]*|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|`(?:\\[\s\S]|[^`\\])*`|\b(?:0[xX][\da-fA-F]+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)\b|[A-Za-z_$][\w$]*|===|!==|=>|==|!=|<=|>=|&&|\|\||\+\+|--|\?\.|[=+\-*/%<>!&|?:]|[{}()[\].,;])/g;
+ document.querySelectorAll('pre code.language-javascript').forEach(code=>{
+  const source=code.textContent,fragment=document.createDocumentFragment();
+  let last=0;
+  for(const match of source.matchAll(pattern)){
+   const token=match[0],index=match.index;
+   fragment.append(document.createTextNode(source.slice(last,index)));
+   let kind='';
+   if(token.startsWith('//')||token.startsWith('/*'))kind='comment';
+   else if(['"', "'", '`'].includes(token[0]))kind='string';
+   else if(/^\d/.test(token))kind='number';
+   else if(keywords.has(token))kind='keyword';
+   else if(builtins.has(token))kind='builtin';
+   else if(/^[A-Za-z_$]/.test(token)&&/^\s*\(/.test(source.slice(index+token.length)))kind='function';
+   else if(/^[{}()[\].,;]$/.test(token))kind='punctuation';
+   else if(/^[=+\-*/%<>!&|?:]/.test(token))kind='operator';
+   if(kind){const span=document.createElement('span');span.className='js-'+kind;span.textContent=token;fragment.append(span);}
+   else fragment.append(document.createTextNode(token));
+   last=index+token.length;
+  }
+  fragment.append(document.createTextNode(source.slice(last)));
+  code.replaceChildren(fragment);
+ });
 })();
 </script>
 </body>
