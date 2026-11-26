@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Асинхронное программирование в JavaScript</title>
+<style>
+:root{color-scheme:light;--paper:#faf7ef;--ink:#24313b;--accent:#24665e;--line:#ded8cb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:19px/1.75 Georgia,serif}
+main{max-width:900px;margin:auto;padding:56px 28px 80px}
+header{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:36px}
+.eyebrow{font:600 12px/1.5 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1,h2,h3{font-family:system-ui,sans-serif;line-height:1.25}
+h1{font-size:clamp(30px,5vw,48px);letter-spacing:-.035em;margin:16px 0}
+h2{font-size:28px;margin-top:48px}h3{font-size:22px;margin-top:32px}
+p{margin:0 0 1.15em}
+nav{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:32px}
+nav:empty{display:none}
+a{color:var(--accent);text-underline-offset:3px}
+pre{background:#1e2936;color:#edf2f7;padding:20px;border-radius:9px;overflow:auto;font:15px/1.6 Consolas,monospace}
+code{font-family:Consolas,monospace;font-size:.88em}
+pre code{font-size:inherit}
+.lab{border:1px solid var(--line);border-radius:10px;padding:20px;background:#fffdf8;margin:24px 0}
+button{font:15px system-ui,sans-serif;background:var(--accent);color:white;border:0;border-radius:6px;padding:10px 16px;cursor:pointer}
+button:disabled{opacity:.5;cursor:default}
+.console{background:#1e2936;color:#d4f3e4;min-height:100px;white-space:pre-wrap;padding:16px;border-radius:6px;font:14px/1.6 Consolas,monospace}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{padding:10px;border:1px solid var(--line);text-align:left}
+@media(max-width:600px){main{padding:30px 18px 48px}body{font-size:17px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="eyebrow">Учебный курс · JavaScript</div>
+<h1>Асинхронное программирование в JavaScript</h1>
+</header>
+<nav id="contents" aria-label="Оглавление"></nav>
+<article id="lessons">
+<!-- Новые разделы курса добавляются сюда по указанию автора. -->
+</article>
+</main>
+<script>
+const contents = document.getElementById('contents');
+const headings = document.querySelectorAll('#lessons h2[id]');
+if (headings.length) {
+ const title = document.createElement('strong');
+ title.textContent = 'Оглавление';
+ contents.append(title);
+ const list = document.createElement('ol');
+ for (const heading of headings) {
+  const item = document.createElement('li');
+  const link = document.createElement('a');
+  link.href = '#' + heading.id;
+  link.textContent = heading.textContent;
+  item.append(link);
+  list.append(item);
+ }
+ contents.append(list);
+}
+</script>
+</body>
+</html>
